@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Expense {
+  id        String   @id @default(cuid())
+  /// Minor units (paise for INR). Never a float.
+  amount    Int
+  category  String
+  date      DateTime @db.Date
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@index([date])
+}
+
+model Budget {
+  id       String @id @default(cuid())
+  category String @unique
+  /// Monthly limit in minor units.
+  amount   Int
+}
